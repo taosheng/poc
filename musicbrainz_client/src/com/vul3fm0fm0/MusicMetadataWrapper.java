@@ -45,20 +45,38 @@ public class MusicMetadataWrapper{
 	return id;
     }
     public static void main(String[] args)throws Exception{
-        println("musicbrainz test") ;
+        println("musicbrainz test:") ;
+        String artistName = "Jolin" ;
+        if( args[0] != null && args[0].length() != 0 ){
+		artistName = args[0] ;
+	} 
+        println("try to find artist name:" + artistName ) ;
 
 	MusicMetadataWrapper mmw = new MusicMetadataWrapper();
-	String artistId = mmw.findArtist("Jolin");
-        println( artistId );
+	String artistId = mmw.findArtist(artistName);
+        println("artist id = "+ artistId );
 
-        
-       // Prepare a request object
-//        String qstring="http://musicbrainz.org/ws/2/release?artist=3033ce2b-2fb2-408e-8c5a-aea48592d7bc&limit=50" ;
+        String findReleaseUrl = "http://musicbrainz.org/ws/2/release?artist="+artistId+"&limit=50" ;
+        println("find release query url="+findReleaseUrl ); 
+
+        Document releaseDoc = mmw.getQueryResultDocument(findReleaseUrl);
+        println("show all the release title"); 
+        NodeList titleNodeList = releaseDoc.getDocumentElement().getElementsByTagName("title");
+
+        for(int i = 0; i< titleNodeList.getLength() ;i++){
+		println(titleNodeList.item(i).getFirstChild().getNodeValue());
+	}
+
 
         
     }
 
     public static void println(Object msg){
-        System.out.println(msg);
+	try{
+        PrintStream out = new PrintStream(System.out, true, "UTF-8");
+        out.println(msg);
+	}catch(Exception e){
+		System.out.println("damn!"+e);
+	}
     }
 }

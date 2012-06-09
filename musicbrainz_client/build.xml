@@ -4,11 +4,15 @@
 
   <import file="${sdk.dir}/config/user/ant-macros.xml" />
   <property name="build" location="build" />
+  <property name="lib" location="lib" />
 
   <path id="project.classpath">
-    <pathelement path="build" />
+    <pathelement path="${build}/classes" />
     <fileset dir="${sdk.dir}/lib">
       <include name="shared/**/*.jar" />
+    </fileset>
+    <fileset dir="${lib}">
+      <include name="*.jar" />
     </fileset>
 
 	
@@ -19,6 +23,7 @@
       description="Compiles Java source and copies other source files to the WAR.">
     <mkdir dir="${build}/classes" />
     <javac
+        encoding = "utf-8"
         srcdir="src"
         destdir="${build}/classes"
         classpathref="project.classpath"
@@ -26,7 +31,9 @@
   </target>
 
   <target name="runtest" depends="compile" description="run test program" >
-       <java classpathref="project.classpath" classname="com.vul3fm0fm0.MusicMetadataWrapper" />
+       <java classpathref="project.classpath" classname="com.vul3fm0fm0.MusicMetadataWrapper" >
+		<arg value="蔡依林" />
+	</java> 
   </target>
 
 
