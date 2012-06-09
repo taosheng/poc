@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <property name="sdk.dir" location="/Users/mac/appengine-java-sdk-1.5.1" />
+
+  <import file="${sdk.dir}/config/user/ant-macros.xml" />
+  <property name="build" location="build" />
+
+  <path id="project.classpath">
+    <pathelement path="build" />
+    <fileset dir="${sdk.dir}/lib">
+      <include name="shared/**/*.jar" />
+    </fileset>
+
+	
+  </path>
+
+
+  <target name="compile"
+      description="Compiles Java source and copies other source files to the WAR.">
+    <mkdir dir="${build}/classes" />
+    <javac
+        srcdir="src"
+        destdir="${build}/classes"
+        classpathref="project.classpath"
+        debug="on" />
+  </target>
+
+  <target name="runtest" depends="compile" description="run test program" >
+       <java classpathref="project.classpath" classname="com.vul3fm0fm0.MusicMetadataWrapper" />
+  </target>
+
+
+</project>
+
