@@ -5,6 +5,7 @@ import org.apache.http.impl.client.DefaultHttpClient ;
 import org.apache.http.client.methods.*; 
 import javax.xml.parsers.*;
 import java.io.* ;
+import java.util.* ;
 import org.w3c.dom.*;
 
  
@@ -45,6 +46,8 @@ public class MusicMetadataWrapper{
 	return id;
     }
     public static void main(String[] args)throws Exception{
+        System.setProperty("file.encoding", "UTF-8");
+        System.setProperty("sun.jnu.encoding", "UTF-8");
         println("musicbrainz test:") ;
         String artistName = "Jolin" ;
         if( args[0] != null && args[0].length() != 0 ){
@@ -68,6 +71,8 @@ public class MusicMetadataWrapper{
 	}
 
 
+	Properties ps = System.getProperties();
+        ps.list(System.out);
         
     }
 
