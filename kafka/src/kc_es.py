@@ -11,18 +11,22 @@ BROKERS_LIST = ['localhost:9092']
 TOPIC = "my-topic"
 
 
+import time
 from kafka import KafkaConsumer
 
 # To consume latest messages and auto-commit offsets
 def readKafka():
     consumer = KafkaConsumer(TOPIC,
-#                         group_id='my-group',
+                         group_id='my-group',
                          bootstrap_servers=['localhost:9092'],
-                         value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+#                         value_deserializer=lambda m: json.loads(m.decode('utf-8'))
+)
     for message in consumer:
+        print(dir(message))
         print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,
                                           message.offset, message.key,
                                           message.value))
+        time.sleep(1)
 
 
 if __name__ == '__main__':
