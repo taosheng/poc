@@ -11,18 +11,26 @@ BROKERS_LIST = ['localhost:9092']
 TOPIC = "my-topic"
 
 def readJsonToDict(f):
-    result = {'test_004':'value_004'}
+    result  = []
+    with open(f) as jsonLines:
+        for l in jsonLines.readlines():
+            if l.strip() == '':
+                continue
+            oneJson = json.loads(l)
+            result.append(oneJson)
+ 
     return result
 
     
-def sendToKafka(jsonDict):
+def sendToKafka(jsonList):
     producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda m: json.dumps(m).encode('utf-8'))
     #producer = KafkaProducer(bootstrap_servers='localhost:9092')
 #    producer = KafkaProducer(value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
     #producer = KafkaProducer(key_serializer=str.encode)
     #producer.send(TOPIC, key='foo123123123', value=b'bar111111111')
-    producer.send(TOPIC,jsonDict)
+    for j in jsonList:
+        producer.send(TOPIC,j)
     producer.flush()
 
 if __name__ == '__main__':
@@ -31,6 +39,6 @@ if __name__ == '__main__':
         exit(0)
 
     TOPIC = sys.argv[1]
-    jsonDict = readJsonToDict(sys.argv[2])
-    sendToKafka(jsonDict)
+    jsonList = readJsonToDict(sys.argv[2])
+    sendToKafka(jsonList)
     
