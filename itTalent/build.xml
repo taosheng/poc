@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="itTalent" default="dist" basedir=".">
+    <description>itTalent </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src/java"/>
+  <property name="build" location="build"/>
+  <property name="jdk" location="build"/>
+  <property name="dist"  location="dist"/>
+  <property name="thirdParty"  location="thirdParty"/>
+
+  <path id="compile.classpath">
+    <pathelement location="${build}"/>
+    <fileset dir="${thirdParty}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+  <path id="run.classpath">
+    <pathelement location="src/sqlmap"/>
+    <fileset dir="${dist}/">
+      <include name="**/*.jar"/>
+    </fileset>
+    <fileset dir="${thirdParty}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <javac srcdir="${src}" destdir="${build}">
+        <classpath refid="compile.classpath" />
+    </javac>
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <mkdir dir="${dist}/lib"/>
+    <jar jarfile="${dist}/lib/itTalent-${DSTAMP}.jar" basedir="${build}"/>
+  </target>
+  <target name="run" depends="dist" 
+        description="run net.radzebra.itTalent.TalentManager from project jar">
+     <java classname="net.radzebra.itTalent.TalentManager" >
+         <classpath refid="run.classpath"> </classpath>
+       </java>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>
+

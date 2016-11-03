@@ -1,0 +1,272 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=zh_TW.UTF-8" />
+		<title>itTalent </title>
+		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
+		<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript">
+                function showSuccessUpdate(msg){
+                    alert(msg);
+                }
+                function showTalentFunc(msg){
+                   alert(msg)
+                   var jsondata=eval("["+msg+"]");
+                   for(var key in jsondata[0]) {
+                	if (jsondata[0].hasOwnProperty(key)){
+    			// value = obj[key];
+   		        $('input[name|="talent.'+key+'"]').val(jsondata[0][key]);
+   		        $('textarea[name|="talent.'+key+'"]').val(jsondata[0][key]);
+  			}
+		   }
+   		   //$('input[name|="talent.name"]').val(jsondata[0]['name']);
+
+   		}
+   		function getTalentById(id){
+		    var targetUrl = "/itTalent/api/talent.byPrimarykey/select";
+    		    $.ajax({
+   			type: "POST",
+   			url: targetUrl,
+ 			data:"{'primarykey':'"+id+"'}", 
+   			success: showTalentFunc
+		    },"json");
+		}
+                function showListFunc(msg){
+
+                    var jsondata=eval(msg);
+
+                    $('#showListUl').children().remove();
+                    for(i=0; i< jsondata.length ; i++){
+                     	//alert(jsondata[i].name);
+                        var oneLi = "<li id='"+ jsondata[i].id +"' " ;
+                        oneLi = oneLi + "onClick='getTalentById("+jsondata[i].id+");' ";
+ 			oneLi = oneLi + " >" + jsondata[i].name +"</li>";
+                        $('#showListUl').append(oneLi);
+                    }
+                }
+
+
+			$(function(){
+
+				$( "input:submit, button").button();
+                                $('#updateTalent').click(function() {
+			            var targetUrl = "/itTalent/api/Talent/update";
+                                    var data = "{" ;
+                                    
+                                    $('input[name^="talent."], textarea[name^="talent."]').each(function() {
+                                         var keyname = $(this).attr('name') ;
+                                         keyname = keyname.replace('talent.','');
+                                         data = data + "'"+keyname +"':'"+ $(this).val()+"',";
+                                    }); 
+                                    data = data +"'reserved':''}";
+                                    alert(data);
+    				    $.ajax({
+   					type: "POST",
+   					url: targetUrl,
+ 					data: data,
+   					success: showSuccessUpdate
+				    },"json");
+                                return false;
+				});
+				$('#searchSubmit').click(function() {
+			            var targetUrl = "/itTalent/api/talent.byEmail/select";
+				    var byEmail = $('input[name|="byEmail"]').val() ;
+
+    				    $.ajax({
+   					type: "POST",
+   					url: targetUrl,
+ 					data:"{'email':'%"+byEmail+"%'}", 
+   					success: showListFunc
+				    },"json");
+
+            //prevent the browser to follow the link
+            			return false;
+        			});
+				$('input[name|="removeTag"]').click(
+					function(){
+						$('input[name=tagRadio]:checked').parent().remove();
+					}
+				);
+
+				// Accordion
+				$("#accordion").accordion({ header: "h3" });
+	
+				// Tabs
+				$('#tabs').tabs();
+	
+
+				// Dialog			
+				$('#dialog').dialog({
+					autoOpen: false,
+					width: 600,
+					buttons: {
+						"Ok": function() { 
+							$(this).dialog("close"); 
+						}, 
+						"Cancel": function() { 
+							$(this).dialog("close"); 
+						} 
+					}
+				});
+				
+				// Dialog Link
+				$('#dialog_link').click(function(){
+					$('#dialog').dialog('open');
+					return false;
+				});
+
+				// Datepicker
+				$('#datepicker').datepicker({
+					inline: true
+				});
+				
+				// Slider
+				$('#slider').slider({
+					range: true,
+					values: [17, 67]
+				});
+				
+				// Progressbar
+				$("#progressbar").progressbar({
+					value: 20 
+				});
+				
+				//hover states on the static widgets
+				$('#dialog_link, ul#icons li').hover(
+					function() { $(this).addClass('ui-state-hover'); }, 
+					function() { $(this).removeClass('ui-state-hover'); }
+				);
+				
+			});
+		</script>
+		<style type="text/css">
+			/*demo page css*/
+			body{ font: 90% "Trebuchet MS", sans-serif; margin: 40px;}
+			.demoHeaders { margin-top: 2em; }
+			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+			#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+			ul#icons {margin: 0; padding: 0;}
+			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+			ul#icons span.ui-icon {float: left; margin: 0 4px;}
+		</style>	
+	</head>
+	<body>
+
+
+
+<div class="demo-description" style="display: none; ">
+</div><!-- End demo-description -->
+
+		<!-- Accordion -->
+		<h3 class="demoHeaders">Talent AP!</h3> 
+                 <div id="searchInfo" >
+		<input type="text" id="byEmail" name="byEmail" />:<input type="submit" value="search" id="searchSubmit" /> 
+                 </div>
+
+		<!-- ui-dialog -->
+		<div id="dialog" title="Dialog Title">
+			<p>Search by email Done!</p>
+		</div>
+	
+   		<div id="showList" >
+ 			<ul id="showListUl">
+			</ul>
+		</div>
+		<!-- Tabs for One Talent Information  -->
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">Basic Information</a></li>
+				<li><a href="#tabs-2">Story </a></li>
+				<li><a href="#tabs-3">Tag </a></li>
+				<li><a href="#tabs-4">Contact</a></li>
+			</ul>
+			<div id="tabs-1">
+				<table>
+					<tr><td align="right">Name:</td>
+					<td align="left"><input type="hidden" name="talent.id" /><input type="text" name="talent.name" /></td></tr>
+
+					<tr><td align="right">First name:</td>
+					<td align="left"><input type="text" name="talent.firstName" /></td></tr>
+
+					<tr><td align="right">Last Name:</td>
+					<td align="left"><input type="text" name="talent.lastName" /></td></tr>
+
+					<tr><td align="right">Cell phone:</td>
+					<td align="left"><input type="text" name="talent.cellPhone" /></td></tr>
+					<tr><td align="right">Email:</td>
+					<td align="left"><input type="text" name="talent.email" /></td></tr>
+					<tr><td align="right">Birth Year:</td>
+					<td align="left"><input type="text" name="talent.birthYear" width="5"/></td></tr>
+					<tr><td align="right">Birth Day:</td>
+					<td align="left"><input type="text" name="talent.birthDate" /></td></tr>
+					<tr><td align="right">Skill Set:</td>
+					<td align="left"><input type="text" name="talent.selfSkillDesc" width="200"/></td></tr>
+					<tr><td align="right">Description:</td>
+					<td align="left"><textarea name="talent.desc" cols="50" rows="5"></textarea></td></tr>
+				</table>
+				<input type="button" id="updateTalent" 
+					value="update basic information" />
+			</div>
+
+
+			<div id="tabs-2">
+				<table>
+					<tr><td align="right">Type:</td><td align="left"><select name="storyType" ><option selected value="project">project</option> </select><td></tr>
+					<tr><td align="right">Start date: </td><td align="left"><input type="text" name="storyStartDate" /></td></tr>
+					<tr><td align="right">End date:</td><td align="left"><input type="text" name="storyEndDate" /></td></tr>
+					<tr><td align="right">Description:</td><td align="left"><textarea name="storyDesc" cols="50" rows="5" ></textarea></td></tr>
+					<tr><td align="right"></td><td align="left"></td></tr>
+				</table>
+				<input type="button" name="insertStory" value="add a story" />
+				<hr />
+
+				<div id="currentStory">
+				</div>
+				<input type="button" name="removeStory" value="remove selected story" />
+           
+			</div>
+
+			<div id="tabs-3">
+				Tag: <input type="text" name="tag" />
+				<input type="button" name="insertTag" value="add a tag"/>
+				<hr />
+
+				<div id="currentTag" >
+				</div>
+				<input type="button" name="removeTag" value="remove selected tag" />
+			</div>
+			<div id="tabs-4">
+				Value: <input type="text" name="contactDesc" />
+				Method: <select name="contactMethod" >	
+						<option value="URL" >URL</option>
+						<option value="tel" >tel</option>
+						<option value="cellphone" >cellphone</option>
+						<option value="email" >email</option>
+						<option value="address" >address</option>
+						<option value="facebook" >facebook</option>
+						<option value="googlePlus" >google+</option>
+						<option value="linkedin" >linkedin</option>
+						<option value="other" >other</option>
+					</select> 
+				<input type="button" name="insertContact" value="add a contact method"/>
+				<hr />
+				<div id="currentContact" >
+				</div>
+				<input type="button" name="removeContact" value="remove selected Contact" />
+
+
+			</div>
+		</div>
+				
+ 
+	
+
+		
+				
+				
+
+	</body>
+</html>
+
+
+

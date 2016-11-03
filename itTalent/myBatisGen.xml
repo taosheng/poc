@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  <classPathEntry location="thirdParty/sqlitejdbc-v056.jar" />
+  <context id="sqliteTables" targetRuntime="MyBatis3">
+    <jdbcConnection driverClass="org.sqlite.JDBC"
+        connectionURL="jdbc:sqlite:sqlite/itTalent.db" >
+    </jdbcConnection>
+
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="net.radzebra.itTalent.dao" targetProject="src/java">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="net.radzebra.itTalent.sqlmap"  targetProject="src/sqlmap/">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <javaClientGenerator type="XMLMAPPER" targetPackage="net.radzebra.itTalent.dao"  targetProject="src/java">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+    <table tableName="talent" schema="talent"/>
+    <table tableName="contact" schema="contact" />
+    <table tableName="talent_story" schema="talent_story" />
+    <table tableName="endorsement" schema="endorsement" />
+    <table tableName="confident_level" schema="confident_level" />
+    <table tableName="type" schema="type" />
+    <table tableName="tag" schema="tag" />
+    <table tableName="talent_tag" schema="talent_tag" />
+
+  </context>
+</generatorConfiguration>

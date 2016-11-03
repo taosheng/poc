@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=zh_TW.UTF8" />
+		<title>itTalent </title>
+		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
+		<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+
+				$( "input:submit, a, button", ".demo" ).button();
+			//	$( "a", ".demo" ).click(function() { return false; });
+
+				$('#searchTalentForm').submit(function() { 
+					$('#dialog').dialog('open');
+                                        $('#resultList > li').remove() ;
+                                        searchText = $('input[name|=searchInput]').val();
+                                        $('#resultList').append("<li>"+searchText+"</li>") ;
+					return false;
+			        }); 
+                                
+
+				// Accordion
+				$("#accordion").accordion({ header: "h3" });
+	
+				// Tabs
+				$('#tabs').tabs();
+	
+
+				// Dialog			
+				$('#dialog').dialog({
+					autoOpen: false,
+					width: 600,
+					buttons: {
+						"Ok": function() { 
+							$(this).dialog("close"); 
+						}, 
+						"Cancel": function() { 
+							$(this).dialog("close"); 
+						} 
+					}
+				});
+				
+				// Dialog Link
+				$('#dialog_link').click(function(){
+					$('#dialog').dialog('open');
+					return false;
+				});
+
+				// Datepicker
+				$('#datepicker').datepicker({
+					inline: true
+				});
+				
+				// Slider
+				$('#slider').slider({
+					range: true,
+					values: [17, 67]
+				});
+				
+				// Progressbar
+				$("#progressbar").progressbar({
+					value: 20 
+				});
+				
+				//hover states on the static widgets
+				$('#dialog_link, ul#icons li').hover(
+					function() { $(this).addClass('ui-state-hover'); }, 
+					function() { $(this).removeClass('ui-state-hover'); }
+				);
+				
+			});
+		</script>
+		<style type="text/css">
+			/*demo page css*/
+			body{ font: 90% "Trebuchet MS", sans-serif; margin: 40px;}
+			.demoHeaders { margin-top: 2em; }
+			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+			#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+			ul#icons {margin: 0; padding: 0;}
+			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+			ul#icons span.ui-icon {float: left; margin: 0 4px;}
+		</style>	
+	</head>
+	<body>
+
+
+
+
+
+
+
+<div class="demo-description" style="display: none; ">
+<p>Examples of the markup that can be used for buttons: A button element, an input of type submit and an anchor.</p>
+</div><!-- End demo-description -->
+
+		<!-- Accordion -->
+		<h3 class="demoHeaders">Search Talent!</h2>
+       		<div id="searchDiv" >
+                 <form name="searchTalentForm" id="searchTalentForm">
+                        <input type="radio" name="searchType" value="byTag" />by tag
+                        <input type="radio" name="searchType" value="byName" />by Name
+                        <input type="radio" name="searchType" value="byEmail" />by email
+                        <input type="radio" name="searchType" value="byStory" />by story : 
+			<input type="text" name="searchInput" id="searchInput"></input> <input type="submit" value="search" class="ui-state-default ui-corner-all" /> 
+                  </form>  
+		</div>
+
+		<!-- ui-dialog -->
+		<div id="dialog" title="Dialog Title">
+			<p>Search Done!</p>
+		</div>
+	
+		<!-- search result  -->
+		<h3 class="demoHeaders">The list of search result:</h2>
+		<ul id="resultList" >
+			<li>....</li>
+			<li>....</li>
+		</ul>
+
+		<!-- Tabs for One Talent Information  -->
+		<h3 class="demoHeaders">Talent</h2>
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">Basic Information</a></li>
+				<li><a href="#tabs-2">Story</a></li>
+				<li><a href="#tabs-3">Tag</a></li>
+			</ul>
+			<div id="tabs-1">xxxx </div>
+			<div id="tabs-2">2222 </div>
+			<div id="tabs-3">3333 </div>
+		</div>
+	
+
+		
+				
+				
+
+	</body>
+</html>
+
+
+

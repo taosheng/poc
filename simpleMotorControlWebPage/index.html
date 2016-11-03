@@ -1,0 +1,122 @@
+﻿﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>Control Panel</title>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+	$('#forward').click(function() {
+		send_op('f');
+	});
+	
+	$('#back').click(function() {
+		send_op('b');
+	});
+	
+	$('#left').click(function() {
+		send_op('l');
+	});
+	
+	$('#right').click(function() {
+		send_op('r');
+	});
+	
+	$('#submit').click(function() {
+		url = '?id=' + $('#data_id').val();
+		window.location.href = url;
+	});
+	
+	urlParas = getUrlVars();
+	data_id = urlParas['id'];
+	if (typeof(data_id) != "undefined" && data_id != '') {
+		$('#data_id').val(data_id);
+		$('#data_id').attr('disabled', 'true');
+	}
+});
+
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+function send_op(op) {
+	var data_id = $('#data_id').val();
+	if (data_id != '') {
+		$.post('/', {'id': $('#data_id').val(), 'op': op});
+	} else {
+		alert('Input id first!');
+	}
+	/*, function(data){
+		alert(data);
+		var content = $(data).find('#content');
+		alert(content.val());
+		$('#queued_cmd').empty().append(content.val());
+		}*/
+}
+</script>
+
+
+<style type="text/css">
+html,
+body {
+	background: #FFF;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+.box {
+	margin: 5px;
+	padding: 5px;
+}
+.button {
+	border: 1px solid black;
+	padding: 5px;
+	margin: 5px;
+}
+
+.btn_col {
+	float: left;
+	width: 30%;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="box">
+	<input type="text" id="data_id" size="50"/> 
+	<span id="submit" class="button">Submit</span>
+	<a href="." class="button">Reset</a>
+</div>
+
+<div class="box">
+<div class="btn_col">
+	<div id="left" class="button" >LEFT</div>
+</div>
+<div class="btn_col">
+	<div id="forward" class="button">FORWARD</div>
+	<div id="back" class="button">BACK</div>
+</div>
+<div class="btn_col">
+	<div id="right" class="button">RIGHT</div>
+</div>
+<div id="queued_cmd">&nbsp;</div>
+<div>
+
+</body>
+</html>

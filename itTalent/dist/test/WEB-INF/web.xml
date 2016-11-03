@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+   version="2.5"> 
+
+    <description>
+	itTalent servlet
+    </description>
+    <display-name>itTalent web server</display-name>
+
+    <!-- Example filter to set character encoding on each request -->
+    <!-- Define filter mappings for the defined filters -->
+
+    <servlet>
+      <servlet-name>talent</servlet-name>
+      <servlet-class>net.radzebra.itTalent.servlet.TalentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>talent</servlet-name>
+        <url-pattern>/talent</url-pattern>
+    </servlet-mapping>
+    <!-- Default login configuration uses form-based authentication -->
+    <security-role>
+      <role-name>role1</role-name>
+    </security-role>
+    <security-role>
+      <role-name>tomcat</role-name>
+    </security-role>    
+
+    <!-- Environment entry examples -->
+    <!--env-entry>
+      <env-entry-description>
+         The maximum number of tax exemptions allowed to be set.
+      </env-entry-description>
+      <env-entry-name>maxExemptions</env-entry-name>
+      <env-entry-type>java.lang.Integer</env-entry-type>
+      <env-entry-value>15</env-entry-value>
+    </env-entry-->
+</web-app>
