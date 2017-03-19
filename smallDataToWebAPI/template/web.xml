@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+   version="2.5"> 
+
+    <description>
+	Small data manager web api
+    </description>
+    <display-name>Small data manager web api</display-name>
+
+
+    <servlet>
+      <servlet-name>WebAPIManager</servlet-name>
+      <servlet-class>org.smalldata.servlet.WebServiceManager</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WebAPIManager</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
+
+    <security-role>
+      <role-name>role1</role-name>
+    </security-role>
+    <security-role>
+      <role-name>tomcat</role-name>
+    </security-role>    
+
+</web-app>

@@ -1,0 +1,11 @@
+application: link-world
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /reload
+  script: reload.py
+  
+- url: /.*
+  script: index.py

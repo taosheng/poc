@@ -1,0 +1,149 @@
+﻿﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>auto reload</title>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<script type="text/javascript">
+var intervalId = null;
+	var url = null;
+	var count = null;
+	
+$(document).ready(function() {
+
+	$('#page').css('height', $(window).height());
+	$('#url').focus();
+	
+	$('#start').click(function() {
+		start(); 
+	});
+	
+	$('#stop').click(function() {
+		stop(); 
+	});
+	
+	
+	$('#up').click(function() {
+		$('#header').animate({top:"0"}, 300);
+		
+	});
+	
+	$('#down').click(function() {
+		$('#header').animate({top:"92%"}, 300);
+		
+	});
+
+
+	function start() {
+		if (intervalId != null) {
+			stop();
+		}
+		url = $('#url').val();
+		var sec = $('#sec').val();
+	
+		intervalId = setInterval('reload()', sec * 1000);
+		reload();
+	}
+
+	function stop() {
+		clearInterval(intervalId);
+		intervalId = null;
+		url = null;
+		count = 0;
+		$("#count").val(count);
+	}
+});
+
+function reload() {
+		$('#page').attr('src', url);
+		
+		$(document).attr('title', url);
+		count++;
+		$("#count").val(count);
+	}
+</script>
+
+
+<style type="text/css">
+html,
+body {
+	background: #FFF;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+
+#url {
+	width: 50%;
+}
+
+#header {
+	width: 98%;
+	margin: 5px;
+	padding: 2px 5px;
+	background: #CCC;
+	height: 25px;
+	position: fixed;
+	border: 2px solid black;
+	font-size: 12px;
+	line-height: 12px;
+	top: 0;
+	z-index: 9;
+}
+
+#up,
+#down {
+	width: 20px;
+	height: 20px;
+	float: right;
+	margin: 2px;
+	pading: 5px;
+	border: 1px solid black;
+	text-align: center;
+}
+
+
+
+#page {
+	width: 100%;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	position: fixed;
+	left: 0;
+	top; 0;
+	z-index: 1;
+}
+
+
+</style>
+
+</head>
+<body>
+<div id="header">
+Url: <input type="text" id="url" name="url"/> 
+<input type="button" id="start" name="start" value="Go!"/> 
+<input type="button" id="stop" name="stop" value="Stop!"/> 
+(Reload every 
+<select id="sec" name="sec">
+	<option value="1">1</option>
+	<option value="5" selected>5</option>
+    <option value="10">10s</option>
+    <option value="20">20s</option>
+    <option value="30">30s</option>
+	<option value="60">60s</option>
+	<option value="120">2min</option>
+	<option value="300">5min</option>
+	<option value="600">10min</option>
+</select>
+) <input type="text" id="count" name="count" size="2" disabled />
+  <div id="down">↓</div>
+ <div id="up">↑</div>
+</div>
+<iframe name="page" id="page">&nbsp;</iframe>
+
+</body>
+</html>

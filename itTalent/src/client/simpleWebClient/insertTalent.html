@@ -1,0 +1,238 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=zh_TW.UTF-8" />
+		<title>itTalent </title>
+		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
+		<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+
+				$( "input:submit, button").button();
+				$('input[name|="insertContact"]').click(
+					function() {
+						var tmpContact='<div id="tmpAddContact" class="currentContactClass"> <input type="radio" id="removeThisDiv" name="contactRadio" />';
+						tmpContact += $('select[name|="contactMethod"]').val() +":";
+						tmpContact += $('input[name|="contactDesc"]').val() +":";
+						tmpContact += "</div>" ;
+						$('#currentContact').append(tmpContact);
+                                                $("input:radio").radio();
+                                        }
+				);
+
+				$('input[name|="insertTag"]').click(
+					function() {
+						var tmpTag='<div id="tmpAddTag" class="currentTagClass"> <input type="radio" id="removeThisDiv" name="tagRadio" />';
+						tmpTag += $('input[name|="tag"]').val() ;
+						tmpTag += "</div>" ;
+						$('#currentTag').append(tmpTag);
+                                                $("input:radio").radio();
+                                        }
+				);
+				$('input[name|="insertStory"]').click(
+					function() {
+						var tmpStory='<div id="tmpAddStory" class="currentStoryClass"> <input type="radio" id="removeThisDiv" name="storyRadio" />';
+						tmpStory += $('select[name|="storyType"]').val()+ ":" ;
+						tmpStory += $('input[name|="storyStartDate"]').val()+":" ;
+						tmpStory += $('input[name|="storyEndDate"]').val()+":" ;
+						tmpStory += $('textarea[name|="storyDesc"]').val()+":" ;
+ 						tmpStory += "</div>";
+						$('#currentStory').append(tmpStory);
+                                                $("input:radio").radio();
+						
+//                                                $('#removeThisDiv').click(function() { alert("called in which div?") ; alert(this);  } );
+					
+						
+					}
+				);
+				$('input[name|="removeContact"]').click(
+					function(){
+						$('input[name=contactRadio]:checked').parent().remove();
+					}
+				);
+				$('input[name|="removeStory"]').click(
+					function(){
+						$('input[name=storyRadio]:checked').parent().remove();
+					}
+				);
+				$('input[name|="removeTag"]').click(
+					function(){
+						$('input[name=tagRadio]:checked').parent().remove();
+					}
+				);
+
+				// Accordion
+				$("#accordion").accordion({ header: "h3" });
+	
+				// Tabs
+				$('#tabs').tabs();
+	
+
+				// Dialog			
+				$('#dialog').dialog({
+					autoOpen: false,
+					width: 600,
+					buttons: {
+						"Ok": function() { 
+							$(this).dialog("close"); 
+						}, 
+						"Cancel": function() { 
+							$(this).dialog("close"); 
+						} 
+					}
+				});
+				
+				// Dialog Link
+				$('#dialog_link').click(function(){
+					$('#dialog').dialog('open');
+					return false;
+				});
+
+				// Datepicker
+				$('#datepicker').datepicker({
+					inline: true
+				});
+				
+				// Slider
+				$('#slider').slider({
+					range: true,
+					values: [17, 67]
+				});
+				
+				// Progressbar
+				$("#progressbar").progressbar({
+					value: 20 
+				});
+				
+				//hover states on the static widgets
+				$('#dialog_link, ul#icons li').hover(
+					function() { $(this).addClass('ui-state-hover'); }, 
+					function() { $(this).removeClass('ui-state-hover'); }
+				);
+				
+			});
+		</script>
+		<style type="text/css">
+			/*demo page css*/
+			body{ font: 90% "Trebuchet MS", sans-serif; margin: 40px;}
+			.demoHeaders { margin-top: 2em; }
+			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+			#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+			ul#icons {margin: 0; padding: 0;}
+			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+			ul#icons span.ui-icon {float: left; margin: 0 4px;}
+		</style>	
+	</head>
+	<body>
+
+
+
+<div class="demo-description" style="display: none; ">
+</div><!-- End demo-description -->
+
+		<!-- Accordion -->
+		<h3 class="demoHeaders">Insert Talent!</h3> 
+		<input type="submit" value="Insert!" /> <p>fill up following tags, and then click the "Insert" </p>
+
+		<!-- ui-dialog -->
+		<div id="dialog" title="Dialog Title">
+			<p>Insert Done!</p>
+		</div>
+	
+		<!-- Tabs for One Talent Information  -->
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">Basic Information</a></li>
+				<li><a href="#tabs-2">Story </a></li>
+				<li><a href="#tabs-3">Tag </a></li>
+				<li><a href="#tabs-4">Contact</a></li>
+			</ul>
+			<div id="tabs-1">
+				<table>
+					<tr><td align="right">Name:</td>
+					<td align="left"><input type="text" name="talentName" /></td></tr>
+
+					<tr><td align="right">First name:</td>
+					<td align="left"><input type="text" name="talentFirstName" /></td></tr>
+
+					<tr><td align="right">Last Name:</td>
+					<td align="left"><input type="text" name="talentLastName" /></td></tr>
+
+					<tr><td align="right">Cell phone:</td>
+					<td align="left"><input type="text" name="talentCellPhone" /></td></tr>
+					<tr><td align="right">Email:</td>
+					<td align="left"><input type="text" name="talentEmail" /></td></tr>
+					<tr><td align="right">Birth Year:</td>
+					<td align="left"><input type="text" name="talentBirthYear" width="5"/></td></tr>
+					<tr><td align="right">Birth Day:</td>
+					<td align="left"><input type="text" name="talentBirthDay" /></td></tr>
+					<tr><td align="right">Skill Set:</td>
+					<td align="left"><input type="text" name="talentSkillSet" width="200"/></td></tr>
+					<tr><td align="right">Description:</td>
+					<td align="left"><textarea name="talentDesc" cols="50" rows="5"></textarea></td></tr>
+				</table>
+				<input type="button" name="insertInfo" value="insert basic information" />
+			</div>
+
+
+			<div id="tabs-2">
+				<table>
+					<tr><td align="right">Type:</td><td align="left"><select name="storyType" ><option selected value="project">project</option> </select><td></tr>
+					<tr><td align="right">Start date: </td><td align="left"><input type="text" name="storyStartDate" /></td></tr>
+					<tr><td align="right">End date:</td><td align="left"><input type="text" name="storyEndDate" /></td></tr>
+					<tr><td align="right">Description:</td><td align="left"><textarea name="storyDesc" cols="50" rows="5" ></textarea></td></tr>
+					<tr><td align="right"></td><td align="left"></td></tr>
+				</table>
+				<input type="button" name="insertStory" value="add a story" />
+				<hr />
+
+				<div id="currentStory">
+				</div>
+				<input type="button" name="removeStory" value="remove selected story" />
+           
+			</div>
+
+			<div id="tabs-3">
+				Tag: <input type="text" name="tag" />
+				<input type="button" name="insertTag" value="add a tag"/>
+				<hr />
+
+				<div id="currentTag" >
+				</div>
+				<input type="button" name="removeTag" value="remove selected tag" />
+			</div>
+			<div id="tabs-4">
+				Value: <input type="text" name="contactDesc" />
+				Method: <select name="contactMethod" >	
+						<option value="URL" >URL</option>
+						<option value="tel" >tel</option>
+						<option value="cellphone" >cellphone</option>
+						<option value="email" >email</option>
+						<option value="address" >address</option>
+						<option value="facebook" >facebook</option>
+						<option value="googlePlus" >google+</option>
+						<option value="linkedin" >linkedin</option>
+						<option value="other" >other</option>
+					</select> 
+				<input type="button" name="insertContact" value="add a contact method"/>
+				<hr />
+				<div id="currentContact" >
+				</div>
+				<input type="button" name="removeContact" value="remove selected Contact" />
+
+
+			</div>
+		</div>
+				
+ 
+	
+
+		
+				
+				
+
+	</body>
+</html>
+
+
+

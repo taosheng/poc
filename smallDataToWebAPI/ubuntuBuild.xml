@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="smalldata" default="dist" basedir=".">
+    <description>small data auto generation </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src/java"/>
+  <property name="webSrc" location="src/web/server"/>
+  <property name="build" location="build"/>
+  <property name="jdk" location="build"/>
+  <property name="ittalentrz" location="/tmp/ittalentrz"/>
+  <property name="gwtsdk" location="/tmp/google_appengine"/>
+  <property name="dist" location="dist"/>
+  <property name="tomcat" location="/home/doug/apache-tomcat-6.0.33"/>
+  <property name="thirdParty"  location="thirdParty"/>
+
+  <path id="compile.classpath">
+    <pathelement location="${build}"/>
+    <fileset dir="${thirdParty}">
+      <include name="**/*.jar"/>
+    </fileset>
+    <fileset dir="${tomcat}/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+  <path id="run.classpath">
+    <fileset dir="${dist}/">
+      <include name="**/*.jar"/>
+    </fileset>
+    <fileset dir="${thirdParty}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <javac srcdir="${src}" destdir="${build}">
+        <classpath refid="compile.classpath" />
+    </javac>
+<!--
+    <javac srcdir="${webSrc}" destdir="${build}">
+        <classpath refid="compile.classpath" />
+    </javac>
+-->
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <mkdir dir="${dist}/lib"/>
+    <jar jarfile="${dist}/lib/smalldata-${DSTAMP}.jar" basedir="${build}"/>
+  </target>
+
+  <target name="run" depends="dist" 
+        description="run net.smalldata.Autogen from project jar">
+     <java classname="net.smalldata.Autogen" >
+         <classpath refid="run.classpath"> </classpath>
+       </java>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+
+  <target name="war" depends="clean,dist" description="build web server war file">
+
+    <war destfile="${dist}/itTalent.war" webxml="src/web/server/web.xml">
+      <fileset dir="sqlite/"/>
+      <fileset dir="src/client/simpleWebClient/"/>
+      <classes dir="src/sqlmap"/>
+      <lib dir="${dist}/lib">
+          <include name="**/*.jar"/>
+      </lib>
+      <lib dir="thirdParty">
+          <include name="*.jar"/>
+      </lib>
+      <lib dir="thirdParty/mybatis-3.0.5/">
+          <include name="*.jar"/>
+      </lib>
+      <lib dir="thirdParty/mybatis-3.0.5/optional/" >
+          <include name="*.jar"/>
+      </lib>
+    </war>
+  </target>
+
+  <target name="gwtWar" depends="clean, dist" 
+	description="build google war, however, gae doesn't support file IO...it won't work in gae" >
+    <mkdir dir="${ittalentrz}/war/WEB-INF/lib" />
+    <mkdir dir="${ittalentrz}/war/WEB-INF/classes" />
+    <copy
+        todir="${ittalentrz}/war/WEB-INF/lib"
+        flatten="true">
+      <fileset dir="${gwtsdk}/lib/user">
+        <include name="**/*.jar" />
+      </fileset>
+    </copy>
+    <copy
+        todir="${ittalentrz}/war/" >
+      <fileset dir="src/client/simpleWebClient/">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    <copy
+        todir="${ittalentrz}/war/WEB-INF/classes"
+        flatten="true" >
+      <fileset dir="sqlite/">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    <copy
+        todir="${ittalentrz}/war/WEB-INF/lib"
+        flatten="true" >
+      <fileset dir="${thirdParty}">
+        <include name="**/*.jar" />
+      </fileset>
+    </copy>
+
+    <copy
+        todir="${ittalentrz}/war/WEB-INF/classes" >
+      <fileset dir="src/sqlmap/">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    <copy todir="${ittalentrz}/war/WEB-INF/lib" file="${dist}/lib/itTalent-${DSTAMP}.jar"/>
+    <copy todir="${ittalentrz}/war/WEB-INF/"  file="src/gwt/WEB-INF/appengine-web.xml" />
+    <copy todir="${ittalentrz}/war/WEB-INF/"  file="src/web/server/web.xml" />
+
+  </target>
+
+
+
+</project>
+
