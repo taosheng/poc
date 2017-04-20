@@ -18,7 +18,6 @@ def getUserPushEventsNo(namedUser, daysBefore):
 
 def showUserInfo(namedUser):
     info = u''
-#    info = info + namedUser.name.encode('utf-8') + " "
     info = info + str(namedUser.email) +"; "
     try:
         location = namedUser.location.decode('UTF-8')
@@ -33,9 +32,6 @@ def showUserInfo(namedUser):
         info = info + "personal_web: <encoding issue>" + "; "
     info = info + "giturl: "+str(namedUser.html_url) + "; "
     info = info + "prepo:"+str(namedUser.public_repos) + "; "
-#    info = info + "repo:"+str(namedUser.get_repos) + ", "
-#    info = info + "watch:"+str(namedUser.get_watched) + ", "
-#    info = info + "starred:"+str(namedUser.get_starred) + ", "
     info = info + "following:"+str(namedUser.following) + "; "
     info = info + "follower:"+str(namedUser.followers) + "; "
 
@@ -49,7 +45,8 @@ def showUsers(gita, q):
     for u in us:
         if u.email is None and u.blog is None:
             continue
-        print(showUserInfo(u)+" work:"+ str(getUserPushEventsNo(u,365)))
+        print(showUserInfo(u))
+#        print(showUserInfo(u)+" work:"+ str(getUserPushEventsNo(u,365)))
 #        limit += 1
 #        if limit >= 5: 
 #            break
@@ -57,12 +54,15 @@ def showUsers(gita, q):
 
 def showRepoByKeyword(gita, keyword):
 #    rs=gita.search_repositories(keyword,language='javascript')
-    rs = gita.search_repositories(keyword,language='javascript',pushed=">=2015-06-30")
+    rs = gita.search_repositories(keyword,pushed=">=2015-06-30")
 
     rlimit = 1
     for repo in rs:
-        if repo.owner.email is None:
+        if repo.owner.email is None or repo.owner.location is None:
             continue
+        if 'Taiwan' not in repo.owner.location :
+            continue
+   
         print("======================")
         print(repo.name+" "+repo.language)
         print(showUserInfo(repo.owner))
@@ -87,16 +87,10 @@ def showRepoByKeyword(gita, keyword):
 
 
 if __name__ == '__main__' :
-#    print("username:")
-#    username = raw_input()
-#    print("password:")
-#    password = raw_input()
     gita = Github(sys.argv[1],sys.argv[2])
-    #showRepoByKeyword(gita, "node.js api")
-    showUsers(gita, 'language:javascript location:taiwan')
+    keyword = sys.argv[3]
+    #showRepoByKeyword(gita, "topic:"+keyword)
+    showUsers(gita, 'language:'+keyword+' location:taiwan')
+    #showUsers(gita, ' location:taiwan')
     #showUsers(gita, 'dougchen language:python')
 
-
-# Then play with your Github objects:
-#for repo in g.get_user().get_repos():
-#    print repo.name
