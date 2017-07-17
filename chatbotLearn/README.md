@@ -10,8 +10,10 @@
 2. AWS
     * Need to have AWS account 
     * Need to setup CLI in your Mac/Linux
-     means you can do following command and show information:
-     aws iam list-roles
+
+         means you can do following command and show information:
+         $ aws iam list-roles
+
     * Read AWS API Gateway and Lambda tutorial
 
 3. Line Account
