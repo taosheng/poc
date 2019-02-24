@@ -87,8 +87,9 @@ def showRepoByKeyword(gita, keyword):
 
 
 if __name__ == '__main__' :
-    gita = Github(sys.argv[1],sys.argv[2])
-    keyword = sys.argv[3]
+    #gita = Github(sys.argv[1],sys.argv[2])
+    gita = Github(sys.argv[1]) #token
+    keyword = sys.argv[2]
     #showRepoByKeyword(gita, "topic:"+keyword)
     showUsers(gita, 'language:'+keyword+' location:taiwan')
     #showUsers(gita, ' location:taiwan')
